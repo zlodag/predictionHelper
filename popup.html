@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+  <form id="entry">
+    <label for="identifier">Accession Number or NHI</label> <input id="identifier" type="text" required />
+    <label for="diagnosis">Diagnosis</label> <input id="diagnosis" type="text" required />
+    <label for="prediction">Prediction (%)</label> <input id="prediction" type="number" required min="0" max="100"/>
+    <label for="known_by">Known by</label> <input id="known_by" type="text"/><!--<input id="known_by" type="date"/>-->
+    <input type="submit"/>
+  </form>
+  <div id="status"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>

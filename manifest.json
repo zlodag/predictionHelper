@@ -1,0 +1,14 @@
+{
+  "name": "PredictionBook helper",
+  "description": "Managing encryption and decryption of PredictionBook entries",
+  "version": "0.1",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["storage"],
+  "options_page": "options.html"
+}

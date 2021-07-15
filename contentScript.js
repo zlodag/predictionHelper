@@ -1,0 +1,1 @@
+// document.querySelector('.prediction .title').textContent.match(/^\[([^\]]+)/)
