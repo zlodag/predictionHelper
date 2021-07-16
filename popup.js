@@ -9,6 +9,7 @@ function show_status(msg) {
 function onFormSubmit(event) {
     event.preventDefault();
     chrome.runtime.sendMessage({
+        messageType: 'newPrediction',
         identifier: identifier_field.value,
         diagnosis: diagnosis_field.value,
         prediction: prediction_field.value,

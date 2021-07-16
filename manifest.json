@@ -9,6 +9,15 @@
   "action": {
     "default_popup": "popup.html"
   },
+  "content_scripts": [
+    {
+      "matches": ["*://predictionbook.com/groups/*"],
+      "js": ["contentScript.js"]
+    }
+  ],
   "permissions": ["storage"],
+  "host_permissions": [
+    "https://encryptstring.com/"
+  ],
   "options_page": "options.html"
 }
