@@ -11,8 +11,9 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://predictionbook.com/groups/*"],
-      "js": ["contentScript.js"]
+      "matches": ["*://predictionbook.com/groups/*", "*://predictionbook.com/users/*"],
+      "js": ["decryptListContentScript.js"],
+      "css": ["decryptListStyle.css"]
     }
   ],
   "permissions": ["storage"],

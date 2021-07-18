@@ -2,11 +2,16 @@
 <html lang="en">
 <head><title>Options</title></head>
 <body>
+<form id="optionsForm">
 <fieldset>
   <legend>Connection</legend>
   <div>
     <label for="api_token">API token:</label>
     <input type="text" id="api_token"/>
+  </div>
+  <div>
+    <label for="group_number">Group number:</label>
+    <input type="number" id="group_number"/>
   </div>
 </fieldset>
 <fieldset>
@@ -16,8 +21,9 @@
     <input type="password" id="password"/>
   </div>
 </fieldset>
+<input type="submit"/>
+</form>
 <div id="status"></div>
-<div><button id="save">Save</button></div>
 <script src="options.js"></script>
 </body>
 </html>

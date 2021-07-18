@@ -1,3 +1,5 @@
+'use strict';
+
 function show_status(msg) {
     const status = document.getElementById('status');
     status.textContent = msg;
@@ -12,15 +14,17 @@ function onFormSubmit(event) {
         messageType: 'newPrediction',
         identifier: identifier_field.value,
         diagnosis: diagnosis_field.value,
-        prediction: prediction_field.value,
-        known_by: known_by_field.value,
+        confidence: confidence_field.value,
+        deadline_text: deadline_field.value,
     }, response => {
-        show_status(chrome.runtime.lastError ? chrome.runtime.lastError.message : response);
+        if (chrome.runtime.lastError) show_status(chrome.runtime.lastError);
+        else if (response.error) show_status(response.error);
+        else if (response.message) show_status(response.message);
     });
 }
 
 const identifier_field = document.getElementById('identifier');
 const diagnosis_field = document.getElementById('diagnosis');
-const prediction_field = document.getElementById('prediction');
-const known_by_field = document.getElementById('known_by');
-document.getElementById('entry').addEventListener('submit', onFormSubmit);
+const confidence_field = document.getElementById('confidence');
+const deadline_field = document.getElementById('deadline');
+document.getElementById('newPredictionForm').addEventListener('submit', onFormSubmit);
