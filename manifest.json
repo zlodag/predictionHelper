@@ -16,9 +16,19 @@
       "css": ["decryptListStyle.css"]
     }
   ],
-  "permissions": ["storage"],
+  "declarative_net_request" : {
+    "rule_resources" : [{
+      "id": "ruleset_1",
+      "enabled": true,
+      "path": "rules.json"
+    }]
+  },
   "host_permissions": [
-    "https://encryptstring.com/"
+    "*://predictionbook.com/predictions/new"
+  ],
+  "permissions": [
+    "storage",
+    "declarativeNetRequest"
   ],
   "options_page": "options.html"
 }
