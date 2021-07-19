@@ -14,8 +14,8 @@ function restore_options() {
         password: '',
         group_number: '',
     }, function(options) {
-        if (chrome.lastError) {
-            show_status(chrome.lastError.message);
+        if (chrome.runtime.lastError) {
+            show_status(chrome.runtime.lastError.message);
         } else {
             api_token.value = options.api_token;
             password.value = options.password;
@@ -37,7 +37,7 @@ function onFormSubmit(event) {
 
     if (Object.keys(options).length) {
         chrome.storage.sync.set(options, function () {
-            show_status(chrome.lastError ? chrome.lastError.message : 'Options saved');
+            show_status(chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Options saved');
             restore_options();
         });
     }

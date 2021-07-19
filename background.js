@@ -1,9 +1,17 @@
 importScripts('crypto-aes-gcm.js');
 
 function decrypt(cipher, password) {
+    // noinspection JSUnresolvedFunction
     return aesGcmDecrypt(cipher, password)
         .then(cleartext => ({decrypted: true, cleartext: cleartext}))
         .catch(() => ({decrypted: false}));
+}
+
+function encrypt(cleartext, password) {
+    // noinspection JSUnresolvedFunction
+    return aesGcmEncrypt(cleartext, password)
+        .then(cipher => ({cipher: cipher}))
+        .catch(reason => ({error: reason}));
 }
 
 function addPrediction(api_token, group_number, encryptedIdentifier, diagnosis, confidence, deadline_text){
@@ -45,8 +53,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     password: '',
                     group_number: '',
                 }, function (options) {
-                    if (chrome.lastError) {
-                        reject(chrome.lastError.message);
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
                     } else if (!options.api_token) {
                         reject('API token not configured - enter it in settings page');
                     } else if (!options.password) {
@@ -66,6 +74,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             return true;
         } else if (request.messageType === 'decrypt'){
             decrypt(request.cipher, request.password).then(sendResponse);
+            return true;
+        } else if (request.messageType === 'encrypt'){
+            encrypt(request.cleartext, request.password).then(sendResponse);
             return true;
         }
     }

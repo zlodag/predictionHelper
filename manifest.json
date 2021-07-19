@@ -11,17 +11,37 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://predictionbook.com/groups/*", "*://predictionbook.com/users/*"],
-      "js": ["decryptListContentScript.js"],
-      "css": ["decryptListStyle.css"]
+      "matches": [
+        "*://predictionbook.com/groups/*",
+        "*://predictionbook.com/users/*",
+        "*://predictionbook.com/predictions/*",
+        "*://predictionbook.com/prediction_groups/*"
+      ],
+      "js": [
+        "decryptListContentScript.js"
+      ],
+      "css": [
+        "decryptListStyle.css"
+      ]
+    },
+    {
+      "matches": [
+        "*://predictionbook.com/prediction_groups/new",
+        "*://predictionbook.com/prediction_groups/*/edit"
+      ],
+      "js": [
+        "createOrEditPredictionContentScript.js"
+      ]
     }
   ],
-  "declarative_net_request" : {
-    "rule_resources" : [{
-      "id": "ruleset_1",
-      "enabled": true,
-      "path": "rules.json"
-    }]
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
   },
   "host_permissions": [
     "*://predictionbook.com/predictions/new"
