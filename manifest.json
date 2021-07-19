@@ -1,7 +1,7 @@
 {
   "name": "PredictionBook helper",
   "description": "Managing encryption and decryption of PredictionBook entries",
-  "version": "0.1",
+  "version": "1.0",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
