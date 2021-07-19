@@ -1,82 +1,18 @@
 importScripts('crypto-aes-gcm.js');
 
-function decrypt(cipher, password) {
-    // noinspection JSUnresolvedFunction
-    return aesGcmDecrypt(cipher, password)
-        .then(cleartext => ({decrypted: true, cleartext: cleartext}))
-        .catch(() => ({decrypted: false}));
-}
-
-function encrypt(cleartext, password) {
-    // noinspection JSUnresolvedFunction
-    return aesGcmEncrypt(cleartext, password)
-        .then(cipher => ({cipher: cipher}))
-        .catch(reason => ({error: reason}));
-}
-
-function addPrediction(api_token, group_number, encryptedIdentifier, diagnosis, confidence, deadline_text){
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    return fetch('https://predictionbook.com/api/prediction_groups', {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify({
-            api_token: api_token,
-            prediction_group: {
-                description: encryptedIdentifier,
-                deadline_text: deadline_text,
-                visibility: 'visible_to_group_' + group_number,
-                notify_creator: true,
-                prediction_0_description: diagnosis,
-                prediction_0_initial_confidence: confidence,
-                // predictions: [{
-                //     description: diagnosis,
-                //     initial_confidence: confidence,
-                // }],
-            },
-        }),
-    }).then(response => {
-        if (response.status === 200) {
-            return response;
-        } else {
-            console.error(response.body.toString());
-            throw Error("Server request failed. Check the error log for details")
-        }
-    });
-}
-
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        if (request.messageType === 'newPrediction') {
-            const optionsPromise = new Promise((resolve, reject) => {
-                chrome.storage.sync.get({
-                    api_token: '',
-                    password: '',
-                    group_number: '',
-                }, function (options) {
-                    if (chrome.runtime.lastError) {
-                        reject(chrome.runtime.lastError.message);
-                    } else if (!options.api_token) {
-                        reject('API token not configured - enter it in settings page');
-                    } else if (!options.password) {
-                        reject('Password not configured - enter it in settings page');
-                    } else if (!options.group_number) {
-                        reject('Group number not configured - enter it in settings page');
-                    } else {
-                        resolve(options);
-                    }
-                });
-            });
-            const encryptedIdentifierPromise = optionsPromise
-                .then(options => aesGcmEncrypt(request.identifier, options.password));
-            Promise.all([optionsPromise, encryptedIdentifierPromise])
-                .then(([options, encryptedIdentifier]) => addPrediction(options.api_token, options.group_number, encryptedIdentifier, request.diagnosis, request.confidence, request.deadline_text))
-                .then(() => sendResponse({message: "Success!"}), reason => sendResponse({error: reason}));
-            return true;
-        } else if (request.messageType === 'decrypt'){
-            decrypt(request.cipher, request.password).then(sendResponse);
+        if (request.messageType === 'decrypt'){
+            // noinspection JSUnresolvedFunction
+            aesGcmDecrypt(request.cipher, request.password)
+                .then(cleartext => ({decrypted: true, cleartext: cleartext}))
+                .catch(() => ({decrypted: false}))
+                .then(sendResponse);
             return true;
         } else if (request.messageType === 'encrypt'){
-            encrypt(request.cleartext, request.password).then(sendResponse);
+            return aesGcmEncrypt(request.cleartext, request.password)
+                .then(cipher => ({cipher: cipher}))
+                .catch(reason => ({error: reason}))
+                .then(sendResponse);
             return true;
         }
     }
