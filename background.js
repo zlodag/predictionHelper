@@ -6,6 +6,10 @@ chrome.runtime.onInstalled.addListener(details => {
     }
 });
 
+chrome.action.onClicked.addListener(() => chrome.tabs.create({
+    url: 'https://predictionbook.com/predictions/new',
+}));
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.messageType === 'decrypt'){
             // noinspection JSUnresolvedFunction
