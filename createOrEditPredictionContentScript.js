@@ -1,5 +1,5 @@
 function usePasswordWith(callback){
-    chrome.storage.sync.get('password', options => {
+    chrome.storage.sync.get({password: ''}, options => {
         if (chrome.runtime.lastError) {
             console.error(chrome.runtime.lastError.message);
         } else if (!options.password) {

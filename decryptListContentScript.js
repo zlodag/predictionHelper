@@ -24,7 +24,7 @@ function getDecrypted(cipher, password){
     return decrypted[cipher];
 }
 
-chrome.storage.sync.get('password', options => {
+chrome.storage.sync.get({password: ''}, options => {
     if (!options.password) {
         console.error('Password not configured - enter it in settings page');
         return;

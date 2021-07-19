@@ -1,5 +1,11 @@
 importScripts('crypto-aes-gcm.js');
 
+chrome.runtime.onInstalled.addListener(details => {
+    if (details.reason === chrome.runtime.OnInstalledReason.INSTALL){
+        chrome.runtime.openOptionsPage();
+    }
+});
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.messageType === 'decrypt'){
             // noinspection JSUnresolvedFunction
@@ -9,7 +15,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 .then(sendResponse);
             return true;
         } else if (request.messageType === 'encrypt'){
-            return aesGcmEncrypt(request.cleartext, request.password)
+            // noinspection JSUnresolvedFunction
+            aesGcmEncrypt(request.cleartext, request.password)
                 .then(cipher => ({cipher: cipher}))
                 .catch(reason => ({error: reason}))
                 .then(sendResponse);

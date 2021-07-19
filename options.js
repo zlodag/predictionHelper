@@ -7,7 +7,7 @@ function show_status(msg) {
 }
 
 function restore_options() {
-    chrome.storage.sync.get('password', options => {
+    chrome.storage.sync.get({password: ''}, options => {
         if (chrome.runtime.lastError) {
             show_status(chrome.runtime.lastError.message);
         } else {
