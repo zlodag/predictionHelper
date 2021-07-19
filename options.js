@@ -7,14 +7,10 @@ function show_status(msg) {
 }
 
 function restore_options() {
-    chrome.storage.sync.get({
-        api_token: '',
-        password: '',
-    }, function(options) {
+    chrome.storage.sync.get('password', options => {
         if (chrome.runtime.lastError) {
             show_status(chrome.runtime.lastError.message);
         } else {
-            api_token.value = options.api_token;
             password.value = options.password;
         }
     });
@@ -22,18 +18,13 @@ function restore_options() {
 
 function onFormSubmit(event) {
     event.preventDefault();
-    const options = {};
-    if (api_token.value) options.api_token = api_token.value;
-    if (password.value) options.password = password.value;
-    if (Object.keys(options).length) {
-        chrome.storage.sync.set(options, () => {
+    if (password.value) {
+        chrome.storage.sync.set({password: password.value}, () => {
             show_status(chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Options saved');
-            restore_options();
         });
     }
 }
 
-const api_token = document.getElementById('api_token');
 const password = document.getElementById('password');
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('optionsForm').addEventListener('submit', onFormSubmit);
