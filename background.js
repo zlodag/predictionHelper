@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(details => {
 });
 
 chrome.action.onClicked.addListener(() => chrome.tabs.create({
-    url: 'https://predictionbook.com/predictions/new',
+    url: 'https://predictionbook.com/prediction_groups/new',
 }));
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
