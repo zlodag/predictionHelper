@@ -26,7 +26,7 @@ function onFormSubmit(event) {
     if (api_token.value) options.api_token = api_token.value;
     if (password.value) options.password = password.value;
     if (Object.keys(options).length) {
-        chrome.storage.sync.set(options, function () {
+        chrome.storage.sync.set(options, () => {
             show_status(chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Options saved');
             restore_options();
         });
