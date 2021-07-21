@@ -20,7 +20,7 @@ plaintextIdentifierInput.required = true;
 
 const plaintextIdentifierLabel = document.createElement('label');
 plaintextIdentifierLabel.for = plaintextIdentifierInput.id;
-plaintextIdentifierLabel.textContent = 'NHI or Accession number';
+plaintextIdentifierLabel.textContent = 'Case reference';
 plaintextIdentifierContainer.append(plaintextIdentifierLabel, plaintextIdentifierInput);
 
 const identifierInput = document.querySelector("#prediction_group_description");
