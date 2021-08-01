@@ -41,12 +41,23 @@ chrome.storage.sync.get({password: ''}, options => {
         });
     } else if (/^\/predictions\/\d+\/?$/.test(window.location.pathname)) {
         const title = document.querySelector("#content > h1").lastChild;
-        const match = title.textContent.match(/^\s*\[([-A-Za-z0-9+/]+={0,3})]\s/);
+        const match = title.textContent.match(/^\s*\[([-A-Za-z0-9+/]+={0,3})]\s(.*)/)
         if (!match) return;
         const cipher = match[1];
         getDecrypted(cipher, options.password).then(response => {
             if (response.decrypted) {
-                title.textContent = match.input.replace(match[1], response.cleartext);
+                const editLink = title.parentElement.firstElementChild.href;
+                const editLinkMatch = editLink ? editLink.match(/prediction_groups\/(\d+)\/edit/) : null;
+                const predictionGroupId = editLinkMatch ? editLinkMatch[1] : null;
+                if (predictionGroupId) {
+                    const groupLink = document.createElement('a');
+                    groupLink.href = '/prediction_groups/' + predictionGroupId;
+                    groupLink.textContent = `[${response.cleartext}]`;
+                    title.before(groupLink);
+                    title.textContent = ' ' + match[2];
+                } else {
+                    title.textContent = `[${response.cleartext}] ${match[2]}`;
+                }
             }
         });
     }
