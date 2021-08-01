@@ -2,7 +2,9 @@ importScripts('crypto-aes-gcm.js');
 
 chrome.runtime.onInstalled.addListener(details => {
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL){
-        chrome.runtime.openOptionsPage();
+        chrome.storage.sync.get({password: ''}, options => {
+            if (!options.password) chrome.runtime.openOptionsPage();
+        });
     }
 });
 
